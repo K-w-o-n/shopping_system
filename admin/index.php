@@ -11,14 +11,14 @@ if ($_SESSION['role'] != 1) {
   header('Location: login.php');
 }
 
-// if ($_POST['search']) {
-//   setcookie('search',$_POST['search'], time() + (86400 * 30), "/");
-// }else{
-//   if (empty($_GET['pageno'])) {
-//     unset($_COOKIE['search']); 
-//     setcookie('search', null, -1, '/'); 
-//   }
-// }
+if ($_POST['search']) {
+  setcookie('search',$_POST['search'], time() + (86400 * 30), "/");
+}else{
+  if (empty($_GET['pageno'])) {
+    unset($_COOKIE['search']); 
+    setcookie('search', null, -1, '/'); 
+  }
+}
 ?>
 
 
@@ -30,9 +30,41 @@ if ($_SESSION['role'] != 1) {
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Shopping Listings</h3>
+                <h3 class="card-title">Products Listings</h3>
               </div>
-             
+              <?php
+                if (!empty($_GET['pageno'])) {
+                  $pageno = $_GET['pageno'];
+                }else{
+                  $pageno = 1;
+                }
+
+                $numOfrecs = 5;
+                $offset = ($pageno - 1) * $numOfrecs;
+
+                if (empty($_POST['search']) && empty($_COOKIE['search'])) {
+                  $stmt = $pdo->prepare("SELECT * FROM categories ORDER BY id DESC");
+                  $stmt->execute();
+                  $rawResult = $stmt->fetchAll();
+
+                  $total_pages = ceil(count($rawResult) / $numOfrecs);
+
+                  $stmt = $pdo->prepare("SELECT * FROM categories ORDER BY id DESC LIMIT $offset,$numOfrecs");
+                  $stmt->execute();
+                  $result = $stmt->fetchAll();
+                }else{
+                  $searchKey = $_POST['search'] ? $_POST['search'] : $_COOKIE['search'];
+                  $stmt = $pdo->prepare("SELECT * FROM categories WHERE title LIKE '%$searchKey%' ORDER BY id DESC");
+                  $stmt->execute();
+                  $rawResult = $stmt->fetchAll();
+
+                  $total_pages = ceil(count($rawResult) / $numOfrecs);
+
+                  $stmt = $pdo->prepare("SELECT * FROM categories WHERE title LIKE '%$searchKey%' ORDER BY id DESC LIMIT $offset,$numOfrecs");
+                  $stmt->execute();
+                  $result = $stmt->fetchAll();
+                }
+                ?>
               <!-- /.card-header -->
               <div class="card-body">
                 <div>

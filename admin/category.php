@@ -11,14 +11,14 @@ if ($_SESSION['role'] != 1) {
   header('Location: login.php');
 }
 
-// if ($_POST['search']) {
-//   setcookie('search',$_POST['search'], time() + (86400 * 30), "/");
-// }else{
-//   if (empty($_GET['pageno'])) {
-//     unset($_COOKIE['search']); 
-//     setcookie('search', null, -1, '/'); 
-//   }
-// }
+if ($_POST['search']) {
+  setcookie('search',$_POST['search'], time() + (86400 * 30), "/");
+}else{
+  if (empty($_GET['pageno'])) {
+    unset($_COOKIE['search']); 
+    setcookie('search', null, -1, '/'); 
+  }
+}
 ?>
 
 
@@ -30,7 +30,7 @@ if ($_SESSION['role'] != 1) {
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-name">Product Listings</h3>
+                <h3 class="card-name">Category Listings</h3>
               </div>
               <?php
                 if (!empty($_GET['pageno'])) {

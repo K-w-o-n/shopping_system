@@ -38,13 +38,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
     ?>
 
     <form class="form-inline ml-3" method="post" 
-    <?php if($page == 'index.php') :?>
-      action='index.php'
-    <?php elseif($page == 'category.php') :?>
-      action='category.php'
-    <?php elseif($page == 'user_list.php') :?>
-      action='user_listing.php'
-    <?php endif ?>
+        <?php if($page == 'index.php') :?>
+          action = 'index.php';
+        <?php elseif($page == 'category.php') :?>
+          action = 'category.php'
+        <?php elseif($page == 'user_list.php') :?>
+          action = 'user_listening.php'
+        <?php endif ?>
+
     >
       <input name="_token" type="hidden" value="<?php echo $_SESSION['_token']; ?>">
 
